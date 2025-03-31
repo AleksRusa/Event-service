@@ -1,10 +1,18 @@
+import os
+
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from sqlalchemy.orm import DeclarativeBase
 
 from config.config import settings
 
+try:
+    Database_URL = os.getenv("Database_URL")
+except:
+    Database_URL = settings.Database_URL
+
+
 async_engine = create_async_engine(
-    url=settings.Database_URL,
+    url=Database_URL,
     echo=False,
 )
 

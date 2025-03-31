@@ -1,0 +1,3 @@
+event_service_venv
+__pycache__/
+.env
