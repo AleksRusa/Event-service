@@ -1,0 +1,8 @@
+sqlalchemy
+fastapi
+uvicorn
+pydantic
+alembic
+pydantic-settings
+email_validator
+asyncpg
