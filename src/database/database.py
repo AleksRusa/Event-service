@@ -5,14 +5,10 @@ from sqlalchemy.orm import DeclarativeBase
 
 from config.config import settings
 
-try:
-    Database_URL = os.getenv("Database_URL")
-except:
-    Database_URL = settings.Database_URL
-
+async_Database_URL = os.getenv("async_Database_URL") or settings.async_Database_URL
 
 async_engine = create_async_engine(
-    url=Database_URL,
+    url=async_Database_URL,
     echo=False,
 )
 
