@@ -3,7 +3,7 @@ import os
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from sqlalchemy.orm import DeclarativeBase
 
-from config.config import settings
+from config.pg_config import settings
 
 async_Database_URL = os.getenv("async_Database_URL") or settings.async_Database_URL
 

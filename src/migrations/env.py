@@ -6,7 +6,7 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from config.config import settings
+from config.pg_config import settings
 from database.models import Event
 from database.database import Base
 

@@ -1,0 +1,4 @@
+event_service_venv
+__pycache__/
+.env
+config/pg_config.py
