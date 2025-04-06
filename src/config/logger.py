@@ -1,5 +1,5 @@
-import logging
 import os
+import logging
 
 
 LOG_DIRS = {
@@ -9,9 +9,18 @@ LOG_DIRS = {
 
 for path in LOG_DIRS.values():
     os.makedirs(path, exist_ok=True)
+class CustomFormatter(logging.Formatter):
+    def format(self, record):
+        # Отображаем путь начиная от 'src'
+        full_path = record.pathname
+        src_index = full_path.find("src")
+        if src_index != -1:
+            record.pathname = full_path[src_index:]
+        return super().format(record)
 
-# Формат логов
-LOG_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+formatter = CustomFormatter(
+    "%(asctime)s - %(levelname)s - %(pathname)s:%(lineno)d - %(message)s"
+)
 
 def setup_logger(name, log_file, level=logging.INFO):
     """Функция для настройки отдельного логгера"""
@@ -20,7 +29,7 @@ def setup_logger(name, log_file, level=logging.INFO):
 
     # Создаём обработчик записи в файл
     file_handler = logging.FileHandler(log_file)
-    file_handler.setFormatter(logging.Formatter(LOG_FORMAT))
+    file_handler.setFormatter(formatter)
 
     # Добавляем обработчик к логгеру
     logger.addHandler(file_handler)

@@ -28,17 +28,19 @@ class Event_Programm(Base):
     time: Mapped[datetime] = mapped_column(nullable=False)
     description: Mapped[str] = mapped_column(String(200), nullable=False)
     
+    event = relationship("Event", back_populates="event_programm")
+
 class Locations(Base):
     __tablename__ = "locations"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(50), unique=True)
-    country: Mapped[str] = mapped_column(String(50), default="Россия")
-    city: Mapped[str] = mapped_column(String(50), default="Москва")
-    area: Mapped[Optional[str]] # optional
-    way_to_start_image: Mapped[Optional[str]] # как добраться до старта 
-    latitude: Mapped[float] = mapped_column(nullable=False, unique=True) 
-    longitude: Mapped[float] = mapped_column(nullable=False, unique=True)
+    country: Mapped[str] = mapped_column(String(50),nullable=True, default="Россия")
+    region: Mapped[Optional[str]] = mapped_column(nullable=True) # optional
+    city: Mapped[str] = mapped_column(String(50), nullable=True, default="Москва")
+    way_to_start_image: Mapped[Optional[str]] = mapped_column(nullable=True) # как добраться до старта 
+    latitude: Mapped[float] = mapped_column(nullable=True)
+    longitude: Mapped[float] = mapped_column(nullable=True) 
     creation_datetime: Mapped[datetime] = mapped_column(server_default=text("TIMEZONE('utc', now())"), nullable=False)
 
 class ParticipantGroups(Base): # уже готовые группы

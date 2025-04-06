@@ -1,4 +1,7 @@
 import requests
+from fastapi import HTTPException
+
+from config.logger import api_error_logger, api_logger
 
 def reverse_geocode(lat, lon):
     try:
@@ -10,22 +13,26 @@ def reverse_geocode(lat, lon):
             "zoom": 10,
             "addressdetails": 1,
         }
-        headers = {"User-Agent": "orienting_project"}
+        headers = {
+            "User-Agent": "orienting_project",
+            "Accept-Language": "ru"
+        }
         response = requests.get(url, params=params, headers=headers)
         data = response.json()
         address = data.get("address", {})
         country = address.get("country", None)
-        state = address.get("state", None)
         region = address.get("region", None)
         city = address.get("city", None)
 
-            # Возвращаем информацию
+        # Возвращаем информацию
         return {
             "country": country,
-            "state": state,
             "region": region,
-            "city": city
+            "city": city,
+            "latitude": lat,
+            "longitude": lon
         }
             
     except requests.RequestException as e:
-        return {"error": str(e)}
+        api_error_logger.error(f"OSM error - {e}")
+        raise HTTPException(status_code=500, detail=f"Error with OpenStreetMap API: {e}")

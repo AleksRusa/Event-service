@@ -4,24 +4,28 @@ from datetime import datetime
 from pydantic import BaseModel
 
 class LocationBase(BaseModel):
+    name: str
     country: str
     city: str
-    area: str
+    region: str
     latitude: float
-    logitude: float
+    longitude: float
+
+    class Config:
+        from_attributes = True 
 
 class LocationCreate(LocationBase):
     way_to_start_image: Optional[str]
     creation_datetime: datetime
 
-class LocationUpdate(BaseModel):
+class LocationUpdate(LocationBase):
     country: Optional[str]
     city: Optional[str]
-    area: Optional[str]
+    region: Optional[str]
     latitude: Optional[float]
     longitude: Optional[float]
     way_to_start_image: Optional[str]
 
-class LocationResponse(LocationBase):
-    way_to_start_image: Optional[str]
+class LocationResponse(LocationUpdate):
+    name: str
 
